@@ -101,6 +101,36 @@ python app.py
 
 Visit: **http://localhost:5000**
 
+## DAROOORI Download AI Model
+
+The trained InceptionV3 model is versioned with the code releases.
+
+### Download
+1. Go to **[Releases](https://github.com/abdessamad-erramy/PulmoAI/releases)**
+2. Download `pulmo_model.h5` from the latest release
+3. Place in `ai_model/` folder
+
+Or download directly:
+```bash
+# Create ai_model folder if it doesn't exist
+mkdir ai_model
+
+# Download model (replace URL with latest release)
+# Windows (PowerShell):
+Invoke-WebRequest -Uri "https://github.com/abdessamad-erramy/PulmoAI/releases/download/v0.8.0/pulmo_model.h5" -OutFile "ai_model/pulmo_model.h5"
+
+# macOS/Linux:
+wget https://github.com/abdessamad-erramy/PulmoAI/releases/download/v0.8.0/pulmo_model.h5 -O ai_model/pulmo_model.h5
+```
+
+**Verify:**
+```bash
+ls ai_model/  # Should show pulmo_model.h5
+```
+
+## ⚠️ Important
+The model file must be in `ai_model/pulmo_model.h5` before running the application.
+
 ---
 
 ## 📁 Project Structure
@@ -188,7 +218,7 @@ MAX_CONTENT_LENGTH=16777216
 
 ---
 
-## 💻 How to Use
+##  How to Use
 
 ### 1. Create Account
 - Go to **http://localhost:5000**
@@ -213,7 +243,7 @@ MAX_CONTENT_LENGTH=16777216
 
 ---
 
-## 🏗️ Tech Stack
+##  Tech Stack
 
 ### Backend
 - **Flask 2.3.0** - Web framework
@@ -239,7 +269,7 @@ MAX_CONTENT_LENGTH=16777216
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 Test the application:
 
@@ -257,7 +287,7 @@ curl -X POST http://localhost:5000/api/predict \
 
 ---
 
-## 📝 API Endpoints
+##  API Endpoints
 
 ### Authentication
 ```
@@ -280,7 +310,7 @@ GET /api/report/<analysis_id>/pdf
 
 ---
 
-## 🐛 Troubleshooting
+##  Troubleshooting
 
 ### "ModuleNotFoundError: No module named 'tensorflow'"
 ```bash
@@ -311,14 +341,14 @@ python -c "from app import app, db; app.app_context().push(); db.create_all()"
 
 ---
 
-## 🔐 Security Notes
+##  Security Notes
 
-⚠️ **For Development Only**
+ **For Development Only**
 - Default SECRET_KEY is insecure
 - Debug mode is ON
 - CORS is open (demo mode)
 
-🔒 **For Production**
+ **For Production**
 - Set `FLASK_ENV=production`
 - Generate strong SECRET_KEY:
   ```bash
@@ -331,7 +361,7 @@ python -c "from app import app, db; app.app_context().push(); db.create_all()"
 
 ---
 
-## 👥 Team Setup
+##  Team Setup
 
 ### For New Team Members
 
@@ -503,7 +533,7 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 
 ---
 
-## 📈 Version History
+##  Version History
 
 - **v0.8.0** (Current) - Beta release with premium UI
 - **v0.7.0** - Grad-CAM implementation
