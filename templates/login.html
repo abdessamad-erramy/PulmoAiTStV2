@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% block title %}Connexion{% endblock %}
+
+{% block content %}
+<div class="auth-wrapper">
+
+  <!-- LEFT: Login form -->
+  <div class="login-left">
+
+    <div class="login-brand">
+      <i class="bi bi-lungs-fill"></i>
+      PulmoAI
+    </div>
+
+    <h1 class="login-title">Connexion</h1>
+    <p class="login-sub">Entrez vos identifiants pour accéder à votre espace</p>
+
+    <form method="POST" action="{{ url_for('auth.login') }}">
+      <div class="mb-3">
+        <label class="form-label">Nom d'utilisateur</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-person text-muted"></i></span>
+          <input type="text" name="username" class="form-control"
+                 placeholder="votre.identifiant" required/>
+        </div>
+      </div>
+      <div class="mb-4">
+        <label class="form-label">Mot de passe</label>
+        <div class="input-group">
+          <span class="input-group-text bg-white"><i class="bi bi-lock text-muted"></i></span>
+          <input type="password" name="password" class="form-control"
+                 placeholder="••••••••" required/>
+        </div>
+      </div>
+      <button type="submit" class="btn-login">
+        <i class="bi bi-box-arrow-in-right me-2"></i>Se connecter
+      </button>
+    </form>
+
+    <div class="divider-or">ou</div>
+
+    <!-- Register -->
+    <p class="form-section-title">Créer un compte médecin</p>
+    <form method="POST" action="{{ url_for('auth.register') }}">
+      <div class="row g-2 mb-2">
+        <div class="col">
+          <input type="text" name="prenom" class="form-control form-control-sm"
+                 placeholder="Prénom"/>
+        </div>
+        <div class="col">
+          <input type="text" name="nom" class="form-control form-control-sm"
+                 placeholder="Nom"/>
+        </div>
+      </div>
+      <div class="mb-2">
+        <input type="text" name="username" class="form-control form-control-sm"
+               placeholder="Nom d'utilisateur" required/>
+      </div>
+      <div class="mb-3">
+        <input type="password" name="password" class="form-control form-control-sm"
+               placeholder="Mot de passe" required/>
+      </div>
+      <button type="submit" class="btn btn-outline-primary w-100" style="border-radius:9px;padding:9px;font-size:13.5px;">
+        <i class="bi bi-person-plus me-2"></i>Créer un compte
+      </button>
+    </form>
+
+  </div>
+
+  <!-- RIGHT: Branding panel -->
+  <div class="login-right">
+    <div class="login-badge">
+      <i class="bi bi-shield-check"></i>
+      Système IA Médical Certifié
+    </div>
+    <h2 class="login-right-title">Détection Pulmonaire<br/>Intelligente par IA</h2>
+    <p class="login-right-sub">
+      PulmoAI analyse vos radiographies thoraciques en quelques secondes
+      grâce au modèle InceptionV3 entraîné sur des milliers de cas cliniques.
+    </p>
+    <ul class="login-features">
+      <li><i class="bi bi-check-circle-fill"></i> Détection : Normal · Pneumonie · COVID-19</li>
+      <li><i class="bi bi-check-circle-fill"></i> Score de confiance et probabilités par classe</li>
+      <li><i class="bi bi-check-circle-fill"></i> Rapport PDF médical téléchargeable</li>
+      <li><i class="bi bi-check-circle-fill"></i> Historique complet des analyses</li>
+    </ul>
+  </div>
+
+</div>
+{% endblock %}

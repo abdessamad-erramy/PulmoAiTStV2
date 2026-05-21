@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}Historique{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2 class="page-title">Historique des Analyses</h2>
+    <p class="page-sub">Toutes vos analyses radiographiques</p>
+  </div>
+  <a href="{{ url_for('predict.upload_page') }}" class="btn btn-primary">
+    <i class="bi bi-cloud-upload me-2"></i>Nouvelle analyse
+  </a>
+</div>
+
+<div class="content-card">
+  <div class="content-card-body p-0">
+    {% if analyses %}
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th class="ps-3">ID</th>
+            <th>Date</th>
+            <th>Diagnostic</th>
+            <th>Confiance</th>
+            <th>Covid %</th>
+            <th>Normal %</th>
+            <th>Pneumonia %</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in analyses %}
+          <tr>
+            <td class="ps-3"><span class="text-muted fw-semibold">#{{ a.id }}</span></td>
+            <td>{{ a.created_at[:16] }}</td>
+            <td>
+              {% if a.prediction == 'Pneumonia' %}
+                <span class="badge bg-danger">{{ a.prediction }}</span>
+              {% elif a.prediction == 'Covid' %}
+                <span class="badge bg-warning">{{ a.prediction }}</span>
+              {% else %}
+                <span class="badge bg-success">{{ a.prediction }}</span>
+              {% endif %}
+            </td>
+            <td><strong>{{ a.confidence }}%</strong></td>
+            <td>{{ a.prob_covid }}%</td>
+            <td>{{ a.prob_normal }}%</td>
+            <td>{{ a.prob_pneum }}%</td>
+            <td>
+              <a href="{{ url_for('predict.result_page', analysis_id=a.id) }}"
+                 class="btn btn-sm btn-primary me-1">
+                <i class="bi bi-eye"></i>
+              </a>
+              <a href="{{ url_for('report.download_report', analysis_id=a.id) }}"
+                 class="btn btn-sm btn-outline-secondary">
+                <i class="bi bi-file-pdf"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <i class="bi bi-inbox fs-1"></i>
+      <p class="mt-3 text-muted">Aucune analyse dans l'historique.</p>
+      <a href="{{ url_for('predict.upload_page') }}" class="btn btn-primary mt-1">
+        <i class="bi bi-upload me-2"></i>Lancer une analyse
+      </a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

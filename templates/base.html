@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PulmoAI — {% block title %}{% endblock %}</title>
+
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet"/>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"/>
+
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+{% if current_user.is_authenticated %}
+
+<div class="wrapper">
+  <nav id="sidebar">
+    <div class="sidebar-header">
+      <a href="{{ url_for('predict.dashboard_page') }}" class="brand">
+        <i class="bi bi-lungs-fill brand-icon"></i>
+        PulmoAI
+      </a>
+    </div>
+
+    <div class="sidebar-section">Navigation</div>
+    <ul class="nav flex-column sidebar-nav">
+      <li class="nav-item">
+        <a href="{{ url_for('predict.dashboard_page') }}"
+           class="nav-link {% if request.endpoint == 'predict.dashboard_page' %}active{% endif %}">
+          <i class="bi bi-grid-1x2"></i> Tableau de bord
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('predict.upload_page') }}"
+           class="nav-link {% if request.endpoint == 'predict.upload_page' %}active{% endif %}">
+          <i class="bi bi-cloud-upload"></i> Nouvelle analyse
+        </a>
+      </li>
+      <li class="nav-item">
+        <a href="{{ url_for('history.history') }}"
+           class="nav-link {% if request.endpoint == 'history.history' %}active{% endif %}">
+          <i class="bi bi-clock-history"></i> Historique
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar">
+          {{ current_user.username[:2].upper() }}
+        </div>
+        <div class="user-details">
+          <div class="user-name">{{ current_user.prenom }} {{ current_user.nom }}</div>
+          <div class="user-role">Médecin</div>
+        </div>
+        <a href="{{ url_for('auth.logout') }}" class="logout-btn" title="Déconnexion">
+          <i class="bi bi-box-arrow-right"></i>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <div id="content">
+
+{% else %}
+
+<div class="auth-wrapper">
+
+{% endif %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-container" style="position:fixed;top:20px;right:20px;z-index:9999;min-width:300px">
+          {% for category, message in messages %}
+            <div class="alert alert-{{ 'danger' if category == 'danger' else category }} alert-dismissible fade show" role="alert">
+              {{ message }}
+              <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+
+{% if current_user.is_authenticated %}
+  </div>
+</div>
+{% else %}
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,157 @@
+# ============================================================================
+# PulmoAI .gitignore
+# ============================================================================
+
+# Virtual Environments
+venv/
+env/
+ENV/
+.venv
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Flask
+instance/
+.webassets-cache
+*.db
+*.sqlite
+*.sqlite3
+
+# TensorFlow/AI
+*.h5
+*.pkl
+*.model
+*.pth
+__pycache__/
+.tensorflow/
+logs/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+.project
+.pydevproject
+.settings/
+*.sublime-project
+*.sublime-workspace
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# Logging
+*.log
+logs/
+debug.log
+
+# Temporary Files
+*.tmp
+*.bak
+*.orig
+*~
+.*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Environment Variables
+.env
+.env.local
+.env.*.local
+config.ini
+secrets.json
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+database/*.db
+database/*.sqlite
+
+# User Uploads (Keep structure, ignore files)
+static/uploads/*
+!static/uploads/.gitkeep
+
+# Generated Files
+static/css/*.min.css
+static/js/*.min.js
+dist/
+build/
+
+# Compiled
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+*.egg
+*.egg-info
+dist
+build
+
+# Docker
+.docker
+docker-compose.override.yml
+
+# CI/CD
+.github/workflows/secrets.yml
+
+# Misc
+.ipynb_checkpoints
+.pytest_cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+*.pem
+*.key
+*.crt
+
+# Large files
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# node_modules (if using Node.js)
+node_modules/
+
+# Package lock files (optional - uncomment if team prefers)
+# package-lock.json
+# yarn.lock

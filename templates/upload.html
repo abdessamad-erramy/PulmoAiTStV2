@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+{% block title %}Nouvelle Analyse{% endblock %}
+
+{% block content %}
+<div class="page-header">
+  <div>
+    <h2 class="page-title">Nouvelle Analyse</h2>
+    <p class="page-sub">Téléchargez une radiographie thoracique pour analyse IA</p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-6">
+
+    <div class="content-card mb-3">
+      <div class="content-card-header">
+        <h5 class="mb-0"><i class="bi bi-cloud-upload me-2 text-primary"></i>Upload Radiographie</h5>
+      </div>
+      <div class="content-card-body">
+        <div class="upload-zone" id="drop-zone">
+          <input type="file" id="file-input" accept="image/png,image/jpg,image/jpeg" hidden/>
+          <div class="upload-icon-wrap">
+            <i class="bi bi-cloud-upload"></i>
+          </div>
+          <h5 id="upload-title" class="mt-3 mb-1" style="font-family:'Sora',sans-serif;font-size:15px;color:var(--text)">
+            Glisser-déposer ou cliquer pour choisir
+          </h5>
+          <p id="upload-sub" class="text-muted small mb-0">PNG, JPG acceptés — Max 16 MB</p>
+        </div>
+
+        <div class="text-center my-3">
+          <span class="text-muted small">— OU —</span>
+        </div>
+
+        <div class="input-group mb-3">
+          <span class="input-group-text bg-light border-0"><i class="bi bi-link-45deg"></i></span>
+          <input type="text" id="url-input" class="form-control border-0 bg-light" placeholder="Coller l'URL d'une image..." style="border-radius:0 10px 10px 0">
+        </div>
+
+        <div id="preview-section" class="text-center mt-3" style="display:none">
+          <img id="preview-img" src="" alt="Aperçu"
+               class="img-fluid rounded"
+               style="max-height:260px;object-fit:contain;background:#000;border-radius:10px"/>
+          <div class="text-muted small mt-2" id="preview-name"></div>
+        </div>
+      </div>
+    </div>
+
+    <button id="analyze-btn" class="btn btn-primary btn-lg w-100 mb-3"
+            style="display:none;border-radius:10px;font-weight:600" onclick="analyzeImage()">
+      <i class="bi bi-cpu me-2"></i>Lancer l'analyse IA
+    </button>
+
+    <div id="loader-section" class="content-card text-center py-5" style="display:none">
+      <div class="spinner-border mb-3" role="status"
+           style="width:2.5rem;height:2.5rem;color:var(--accent)"></div>
+      <p class="text-muted mb-1">Analyse InceptionV3 en cours…</p>
+      <p class="text-muted small">Prétraitement → Normalisation → Prédiction</p>
+    </div>
+
+    <div id="error-section" style="display:none"></div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+const dz = document.getElementById('drop-zone');
+const fi = document.getElementById('file-input');
+const ui = document.getElementById('url-input');
+let currentFile = null;
+let currentURL = null;
+
+dz.addEventListener('click', () => fi.click());
+dz.addEventListener('dragover',  e => { e.preventDefault(); dz.classList.add('drag'); });
+dz.addEventListener('dragleave', ()  => dz.classList.remove('drag'));
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag');
+  handleFile(e.dataTransfer.files[0]);
+});
+fi.addEventListener('change', () => handleFile(fi.files[0]));
+
+ui.addEventListener('input', () => {
+  const url = ui.value.trim();
+  if (url) {
+    handleURL(url);
+  } else {
+    resetUpload();
+  }
+});
+
+function handleFile(file) {
+  if (!file) return;
+  currentFile = file;
+  currentURL = null;
+  ui.value = '';
+  document.getElementById('preview-img').src = URL.createObjectURL(file);
+  document.getElementById('preview-name').textContent = `${file.name} — ${(file.size/1024).toFixed(1)} KB`;
+  document.getElementById('preview-section').style.display = 'block';
+  document.getElementById('analyze-btn').style.display     = 'block';
+  document.getElementById('upload-title').textContent      = '✅ Image prête';
+  document.getElementById('upload-sub').textContent        = 'Cliquez sur "Lancer l\'analyse IA"';
+}
+
+function handleURL(url) {
+  currentURL = url;
+  currentFile = null;
+  fi.value = '';
+  document.getElementById('preview-img').src = url;
+  document.getElementById('preview-name').textContent = `URL: ${url}`;
+  document.getElementById('preview-section').style.display = 'block';
+  document.getElementById('analyze-btn').style.display     = 'block';
+  document.getElementById('upload-title').textContent      = '✅ URL détectée';
+  document.getElementById('upload-sub').textContent        = 'Cliquez sur "Lancer l\'analyse IA"';
+}
+
+function resetUpload() {
+  currentFile = null;
+  currentURL = null;
+  document.getElementById('preview-section').style.display = 'none';
+  document.getElementById('analyze-btn').style.display     = 'none';
+  document.getElementById('upload-title').textContent      = 'Glisser-déposer ou cliquer pour choisir';
+  document.getElementById('upload-sub').textContent        = 'PNG, JPG acceptés — Max 16 MB';
+}
+
+async function analyzeImage() {
+  if (!currentFile && !currentURL) return;
+  document.getElementById('analyze-btn').style.display    = 'none';
+  document.getElementById('loader-section').style.display = 'block';
+  document.getElementById('error-section').style.display  = 'none';
+
+  let body;
+  let headers = {};
+
+  if (currentFile) {
+    body = new FormData();
+    body.append('image', currentFile);
+  } else {
+    body = JSON.stringify({ image_url: currentURL });
+    headers['Content-Type'] = 'application/json';
+  }
+
+  try {
+    const res  = await fetch('/upload', { method: 'POST', body, headers });
+    const data = await res.json();
+    document.getElementById('loader-section').style.display = 'none';
+
+    if (data.error) {
+      document.getElementById('error-section').innerHTML =
+        `<div class="alert alert-danger"><i class="bi bi-exclamation-triangle me-2"></i>${data.error}</div>`;
+      document.getElementById('error-section').style.display = 'block';
+      document.getElementById('analyze-btn').style.display   = 'block';
+      return;
+    }
+    window.location.href = '/result/' + data.analysis_id;
+  } catch(err) {
+    document.getElementById('loader-section').style.display = 'none';
+    document.getElementById('error-section').innerHTML =
+      `<div class="alert alert-danger"><i class="bi bi-wifi-off me-2"></i>Erreur réseau : ${err.message}</div>`;
+    document.getElementById('error-section').style.display = 'block';
+    document.getElementById('analyze-btn').style.display   = 'block';
+  }
+}
+</script>
+{% endblock %}
