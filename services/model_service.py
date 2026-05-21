@@ -20,11 +20,11 @@ def _get_model(model_path: str):
                 f"Modèle introuvable : {model_path}\n"
                 "→ Vérifiez que le fichier 'pulmo_model.h5' est bien dans ai_model/"
             )
-        print(f"⏳ Chargement du modèle depuis {model_path}...")
-        # ✅ FIXED: load with compile=False to avoid custom optimizer issues (e.g. 'Itao')
+        print(f" Chargement du modèle depuis {model_path}...")
+        #  FIXED: load with compile=False to avoid custom optimizer issues (e.g. 'Itao')
         _model = load_model(model_path, compile=False)
         _model_path = model_path
-        print("✅ Modèle chargé avec succès")
+        print(" Modèle chargé avec succès")
     return _model
 
 def predict(img_path, model_path, img_size, class_names):
@@ -33,7 +33,7 @@ def predict(img_path, model_path, img_size, class_names):
     """
     model = _get_model(model_path)
 
-    # ✅ Use OpenCV exactly like the training code
+    #  Use OpenCV exactly like the training code
     image = cv2.imread(img_path)
     if image is None:
         raise ValueError(f"Impossible de lire l'image : {img_path}")
