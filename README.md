@@ -105,7 +105,9 @@ Visit: **http://localhost:5000**
 
 The trained InceptionV3 model is versioned with the code releases.
 
-### Download
+### Download from google drive : https://drive.usercontent.google.com/download?id=1L4s5_5x14rhBogD_knc3vTnWjwl7QIVp&export=download&authuser=0
+
+### Download here
 1. Go to **[Releases](https://github.com/abdessamad-erramy/PulmoAI/releases)**
 2. Download `pulmo_model.h5` from the latest release
 3. Place in `ai_model/` folder
