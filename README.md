@@ -367,7 +367,7 @@ python -c "from app import app, db; app.app_context().push(); db.create_all()"
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/yourname/PulmoAI.git
+   git clone https://github.com/abdessamad-erramy/PulmoAI.git
    cd PulmoAI
    ```
 
@@ -484,12 +484,21 @@ We welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
 
 ---
 
+---
+## team : 
+WALID : https://github.com/walidbouadel01
+MOHAMAD : https://github.com/MedNEJ10-cloud
+ABDESSAMAD : https://github.com/abdessamad-erramy
+
+---
+
+
 ##  Support
 
 ### Questions or Issues?
 - Check [TROUBLESHOOTING.md](./TROUBLESHOOTING.md)
 - Open an issue on GitHub
-- Ask the team in your chat/email
+- Ask the team in https://github.com/MedNEJ10-cloud & https://github.com/walidbouadel01
 
 ### Need Help?
 - Read this README carefully
