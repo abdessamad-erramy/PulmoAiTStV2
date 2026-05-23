@@ -9,7 +9,7 @@
 
 ---
 
-## 📋 What is PulmoAI?
+##  What is PulmoAI?
 
 PulmoAI analyzes chest X-ray images using artificial intelligence to detect:
 -  **COVID-19** - Coronavirus infection detection
@@ -135,7 +135,7 @@ The model file must be in `ai_model/pulmo_model.h5` before running the applicati
 
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 PulmoAI/
