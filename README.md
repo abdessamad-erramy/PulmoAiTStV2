@@ -130,7 +130,7 @@ wget https://github.com/abdessamad-erramy/PulmoAI/releases/download/v0.8.0/pulmo
 ls ai_model/  # Should show pulmo_model.h5
 ```
 
-## ⚠️ Important
+## Important
 The model file must be in `ai_model/pulmo_model.h5` before running the application.
 
 ---
@@ -188,7 +188,7 @@ PulmoAI/
 
 ---
 
-## 🔧 Configuration
+##  Configuration
 
 ### Environment Variables (.env)
 
