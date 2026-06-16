@@ -137,9 +137,16 @@ def preprocess_image_for_visualization(img_path, target_size=(224, 224)):
     return np.uint8(img)
 
 
+import matplotlib
+# TRÈS IMPORTANT pour Flask : force matplotlib à ne pas ouvrir de fenêtre graphique
+matplotlib.use('Agg') 
+import matplotlib.pyplot as plt
+import numpy as np
+import cv2
+
 def save_gradcam_with_alpha(heatmap, original_img, output_path, alpha=0.4):
     """
-    Save Grad-CAM with better blending
+    Save Grad-CAM with matplotlib (plt.savefig)
     
     Args:
         heatmap: Grad-CAM heatmap (0-1)
@@ -147,28 +154,29 @@ def save_gradcam_with_alpha(heatmap, original_img, output_path, alpha=0.4):
         output_path: Where to save
         alpha: Blend factor (0-1)
     """
-    import matplotlib.cm as cm
-    from tensorflow import keras
+    # 1. Redimensionner la heatmap pour qu'elle ait la même taille que l'image
+    heatmap_resized = cv2.resize(heatmap, (original_img.shape[1], original_img.shape[0]))
     
-    # Scale heatmap to 0-255
-    heatmap_uint8 = np.uint8(255 * heatmap)
+    # 2. Créer une figure de la taille exacte de l'image (sans bordures blanches)
+    dpi = 100
+    height, width = original_img.shape[:2]
+    fig, ax = plt.subplots(figsize=(width/dpi, height/dpi), dpi=dpi)
     
-    # Apply jet colormap
-    jet = cm.get_cmap("jet")
-    jet_colors = jet(np.arange(256))[:, :3]
-    jet_heatmap = jet_colors[heatmap_uint8]
+    # Désactiver les axes pour ne pas avoir de cadre
+    ax.axis('off')
+    fig.subplots_adjust(left=0, right=1, top=1, bottom=0)
     
-    # Convert to PIL and resize
-    jet_heatmap_img = keras.preprocessing.image.array_to_img(jet_heatmap)
-    jet_heatmap_img = jet_heatmap_img.resize((original_img.shape[1], original_img.shape[0]))
-    jet_heatmap_array = keras.preprocessing.image.img_to_array(jet_heatmap_img)
+    # 3. Afficher l'image originale
+    ax.imshow(original_img)
     
-    # Blend: heatmap * alpha + original * (1-alpha)
-    blended = jet_heatmap_array * alpha + original_img * (1 - alpha)
-    blended = np.uint8(np.clip(blended, 0, 255))
+    # 4. Superposer la heatmap avec le colormap 'jet' et la transparence (alpha)
+    ax.imshow(heatmap_resized, cmap='jet', alpha=alpha)
     
-    # Save
-    result_img = keras.preprocessing.image.array_to_img(blended)
-    result_img.save(output_path)
+    # 5. Sauvegarder l'image combinée
+    plt.savefig(output_path, bbox_inches='tight', pad_inches=0, transparent=True)
+    
+    # 6. VIDER LA MÉMOIRE (Obligatoire pour que Flask ne plante pas après plusieurs essais)
+    plt.clf()
+    plt.close(fig)
     
     return output_path
