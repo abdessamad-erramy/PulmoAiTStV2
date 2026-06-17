@@ -139,51 +139,45 @@ The model file must be in `ai_model/pulmo_model.h5` before running the applicati
 
 ```
 PulmoAI/
-├── app.py                    Main Flask application
-├── config.py                 Configuration settings
-├── requirements.txt          Python dependencies
+├── app.py                    ← Point d'entrée Flask
+├── config.py                 ← Configuration centralisée
+├── requirements.txt          ← Dépendances Python
 │
 ├── ai_model/
-│   └── pulmo_model.h5       Trained InceptionV3 model (download separately)
+│   └── pulmo_model.h5       ← Modèle InceptionV3 entraîné
 │
 ├── database/
-│   ├── pulmoai.db           SQLite database (auto-created)
-│   └── init_db.py           Database initialization
+│   ├── pulmoai.db           ← Base SQLite (auto-créée)
+│   └── init_db.py           ← Script d'initialisation
 │
-├── models/
-│   ├── user.py              User model (authentication)
-│   ├── analysis.py          Analysis history model
-│   └── __init__.py
+├── models/                  ← M — Modèles de données
+│   ├── user.py
+│   └── analysis.py
 │
-├── routes/
-│   ├── auth.py              Login/Register endpoints
-│   ├── predict.py           AI prediction endpoints
-│   ├── history.py           Analysis history endpoints
-│   ├── report.py            PDF report generation
-│   └── __init__.py
+├── routes/                  ← C — Contrôleurs (Blueprints)
+│   ├── auth.py
+│   ├── predict.py
+│   ├── history.py
+│   └── report.py
 │
-├── services/
-│   ├── model_service.py     AI model inference
-│   ├── image_service.py     Image upload handling
-│   ├── image_preprocessing.py X-ray preprocessing
-│   ├── gradcam_service.py   Grad-CAM visualization
-│   ├── pdf_service.py       PDF report generation
-│   └── __init__.py
+├── services/                ← Couche de services métier
+│   ├── model_service.py
+│   ├── gradcam_service.py
+│   ├── image_service.py
+│   ├── image_preprocessing.py
+│   └── pdf_service.py
 │
-├── static/
-│   ├── css/
-│   │   └── style.css        Application styles
-│   ├── uploads/             User uploaded X-ray images
-│   └── js/                  Frontend scripts
+├── templates/               ← V — Vues (Jinja2)
+│   ├── base.html
+│   ├── login.html
+│   ├── dashboard.html
+│   ├── upload.html
+│   ├── result.html
+│   └── history.html
 │
-├── templates/
-│   ├── base.html            Base template
-│   ├── login.html           Login page
-│   ├── upload.html          Upload page
-│   ├── dashboard.html       User dashboard
-│   └── result.html          Analysis results page
-│
-└── venv/                    Virtual environment (created locally)
+└── static/
+    ├── css/style.css        ← Styles custom
+    └── uploads/             ← Images uploadées + heatmaps
 ```
 
 ---
