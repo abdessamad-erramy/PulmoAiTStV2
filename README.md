@@ -510,7 +510,7 @@ ABDESSAMAD : https://github.com/abdessamad-erramy
 |-----------|--------|
 | Backend API | ✅ Complete |
 | Frontend UI | ✅ Complete |
-| AI Model | Trained tbarklah 3la khoya simo |
+| AI Model | avec Nejmeddine|
 | Grad-CAM | Working ms khasha chwiya  |
 | Authentication |  Complete khasha chwiya |
 | Database |  Ready |
